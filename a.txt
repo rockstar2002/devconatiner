@@ -1,0 +1,89 @@
+make a .devcontainer than make a file devcontainer.json and play with thing
+{
+  "name": "Python 3",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.11-bullseye",
+  "customizations": {
+    "codespaces": {
+      "openFiles": [
+        "README.md",
+        "app.py"
+      ]
+    },
+    "vscode": {
+      "settings": {},
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ]
+    }
+  },
+  "updateContentCommand": "[ -f packages.txt ] && sudo apt update && sudo apt upgrade -y && sudo xargs apt install -y <packages.txt; [ -f requirements.txt ] && pip3 install --user -r requirements.txt; pip3 install --user streamlit; echo '✅ Packages installed and Requirements met'",
+  "postAttachCommand": {
+    "server": "streamlit run app.py --server.enableCORS false --server.enableXsrfProtection false"
+  },
+  "portsAttributes": {
+    "8501": {
+      "label": "Application",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "forwardPorts": [
+    8501
+  ]
+}
+
+what this code is all about 
+
+name: A human-readable name for your dev container. In this case, it's "Python 3."
+
+image: Specifies the Docker image to use for the development container. In this case, it uses the Python image from Microsoft's Dev Containers collection.
+
+customizations: Customizes the development environment.
+
+codespaces: Defines settings related to Visual Studio Codespaces, specifying which files to open by default (README.md and app.py in this case).
+vscode: Specifies VS Code settings and extensions to be installed. Here, it installs the Python extension and Pylance (a VS Code extension for Python language support).
+updateContentCommand: A command that is run when the container is built. It updates system packages, installs additional packages from packages.txt, installs Python requirements from requirements.txt, and installs the streamlit library. Finally, it echoes a success message.
+
+postAttachCommand: Specifies a command to run after attaching to the running container. In this case, it starts a Streamlit server for the app.py file and disables CORS and XSRF protection.
+
+portsAttributes: Provides additional information about forwarded ports. In this case, it labels port 8501 as "Application" and specifies that, on auto-forwarding, it should open a preview.
+
+forwardPorts: Specifies which ports to forward. In this case, it forwards port 8501 (commonly used for Streamlit applications).
+
+This configuration file is particularly useful for creating a consistent development environment, and Visual Studio Code will automatically detect and use it when you open the project in a Dev Container.
+======================================================================================================================================================================================
+.devcontainer.json
+{
+  "name": "Example Dev Container",
+  "image": "your-docker-image:tag",
+  "extensions": ["extension.id", "another.extension"],
+  "forwardPorts": [3000, 8000],
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "python.linting.pylintEnabled": true
+  },
+  "postCreateCommand": "echo 'Container created!'",
+  "postStartCommand": "echo 'Container started!'",
+  "postAttachCommand": "echo 'Container attached!'"
+}
+
+name:
+
+Description: A human-readable name for your dev container.
+Example: "name": "Example Dev Container"
+image:
+
+Description: Specifies the Docker image to use for the development container.
+Example: "image": "your-docker-image:tag"
+extensions:
+
+Description: Lists the extensions to be installed in the development container.
+Example: "extensions": ["extension.id", "another.extension"]
+forwardPorts:
+
+Description: Specifies an array of ports to forward from the container to the host.
+Example: "forwardPorts": [3000, 8000]
+settings:
+
+Description: Allows you to set specific VS Code settings for the development container.
